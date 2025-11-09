@@ -12,7 +12,7 @@ services:
       - "${DB_PORT:-5432}:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./migrations:/docker-entrypoint-initdb.d
+      - ./backend/migrations:/docker-entrypoint-initdb.d
     networks:
       - autosave-network
     healthcheck:
@@ -39,9 +39,10 @@ services:
 
   api:
     build:
-      context: .
+      context: ./backend
       dockerfile: Dockerfile.dev
     container_name: autosave-api
+    working_dir: /app
     environment:
       DB_HOST: postgres
       REDIS_URL: redis://redis:6379
@@ -49,8 +50,7 @@ services:
     ports:
       - "${APP_PORT:-8080}:8080"
     volumes:
-      - .:/app
-      - /app/tmp
+      - ./backend:/app
     depends_on:
       postgres:
         condition: service_healthy
@@ -64,7 +64,7 @@ services:
     image: migrate/migrate
     container_name: autosave-migrate
     volumes:
-      - ./migrations:/migrations
+      - ./backend/migrations:/migrations
     command: [
       "-path", "/migrations",
       "-database", "postgres://${DB_USER:-autosave}:${DB_PASSWORD:-autosave_password}@postgres:5432/${DB_NAME:-autosave_db}?sslmode=disable",

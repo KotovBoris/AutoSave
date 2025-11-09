@@ -1,0 +1,32 @@
+# Git
+.git
+.gitignore
+
+# Documentation
+README.md
+docs/
+
+# Environment
+.env.example
+.env.local
+
+# Development
+.air.toml
+tmp/
+*.log
+
+# Test
+*_test.go
+coverage.out
+coverage.html
+
+# IDE
+.idea/
+.vscode/
+
+# OS
+.DS_Store
+
+# Scripts
+scripts/
+*.ps1
