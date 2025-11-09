@@ -27,3 +27,6 @@ backend/logs/
 
 # Coverage
 backend/coverage.*
+
+# Helper Scripts
+backend/scripts/
