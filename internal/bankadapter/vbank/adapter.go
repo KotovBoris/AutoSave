@@ -15,7 +15,7 @@ type Adapter struct {
 }
 
 // NewAdapter creates new VBank adapter
-func NewAdapter(cfg Config) *Adapter {
+func NewAdapter(cfg Config) bankadapter.BankAdapter {
 	return &Adapter{
 		BaseAdapter: bankadapter.NewBaseAdapter(
 			cfg.ClientID,
@@ -49,3 +49,4 @@ func (a *Adapter) IsHealthy() bool {
 	defer resp.Body.Close()
 	return resp.StatusCode == http.StatusOK
 }
+

@@ -5,7 +5,9 @@ import (
     
     "github.com/autosave/backend/internal/bankadapter"
     "github.com/rs/zerolog"
-)// Config for ABank adapter
+)
+
+// Config for ABank adapter
 type Config struct {
     ClientID     string
     ClientSecret string
@@ -14,146 +16,112 @@ type Config struct {
     Logger       *zerolog.Logger
 }
 
-// Adapter for ABank
+// Adapter for ABank - using mock for MVP
 type Adapter struct {
-    *bankadapter.BaseAdapter
     config Config
     logger *zerolog.Logger
+    mock   *bankadapter.MockAdapter
 }
 
 // NewAdapter creates new ABank adapter
-func NewAdapter(cfg Config) *Adapter {
-    // ABank will have its own implementation
-    // For MVP, we use the mock adapter internally
+func NewAdapter(cfg Config) bankadapter.BankAdapter {
     return &Adapter{
-        BaseAdapter: bankadapter.NewBaseAdapter(
-            cfg.ClientID,
-            cfg.ClientSecret,
-            cfg.BaseURL,
-            cfg.TeamID,
-            cfg.Logger,
-        ),
         config: cfg,
         logger: cfg.Logger.With().Str("bank", "abank").Logger(),
+        mock:   bankadapter.NewMockAdapter("abank"),
     }
 }
 
-// For now, ABank delegates to mock implementation
-// This avoids import cycles while keeping the structure
-
 func (a *Adapter) GetBankToken(clientID, clientSecret string) (*bankadapter.TokenResponse, error) {
-    mock := bankadapter.NewMockAdapter("abank")
-    return mock.GetBankToken(clientID, clientSecret)
+    return a.mock.GetBankToken(clientID, clientSecret)
 }
 
 func (a *Adapter) RefreshToken(refreshToken string) (*bankadapter.TokenResponse, error) {
-    mock := bankadapter.NewMockAdapter("abank")
-    return mock.RefreshToken(refreshToken)
+    return a.mock.RefreshToken(refreshToken)
 }
 
 func (a *Adapter) CreateAccountConsent(token, clientID, requestingBank string, permissions []string) (*bankadapter.ConsentResponse, error) {
-    mock := bankadapter.NewMockAdapter("abank")
-    return mock.CreateAccountConsent(token, clientID, requestingBank, permissions)
+    return a.mock.CreateAccountConsent(token, clientID, requestingBank, permissions)
 }
 
 func (a *Adapter) CreateProductConsent(token, clientID, requestingBank string, permissions []string) (*bankadapter.ConsentResponse, error) {
-    mock := bankadapter.NewMockAdapter("abank")
-    return mock.CreateProductConsent(token, clientID, requestingBank, permissions)
+    return a.mock.CreateProductConsent(token, clientID, requestingBank, permissions)
 }
 
 func (a *Adapter) CreatePaymentConsent(token, clientID, requestingBank string, consent bankadapter.PaymentConsentRequest) (*bankadapter.ConsentResponse, error) {
-    mock := bankadapter.NewMockAdapter("abank")
-    return mock.CreatePaymentConsent(token, clientID, requestingBank, consent)
+    return a.mock.CreatePaymentConsent(token, clientID, requestingBank, consent)
 }
 
 func (a *Adapter) GetConsent(token, consentID string) (*bankadapter.ConsentResponse, error) {
-    mock := bankadapter.NewMockAdapter("abank")
-    return mock.GetConsent(token, consentID)
+    return a.mock.GetConsent(token, consentID)
 }
 
 func (a *Adapter) DeleteConsent(token, consentID string) error {
-    mock := bankadapter.NewMockAdapter("abank")
-    return mock.DeleteConsent(token, consentID)
+    return a.mock.DeleteConsent(token, consentID)
 }
 
 func (a *Adapter) GetAccounts(token, clientID, consentID, requestingBank string) ([]bankadapter.Account, error) {
-    mock := bankadapter.NewMockAdapter("abank")
-    return mock.GetAccounts(token, clientID, consentID, requestingBank)
+    return a.mock.GetAccounts(token, clientID, consentID, requestingBank)
 }
 
 func (a *Adapter) GetAccountDetails(token, accountID, consentID, requestingBank string) (*bankadapter.Account, error) {
-    mock := bankadapter.NewMockAdapter("abank")
-    return mock.GetAccountDetails(token, accountID, consentID, requestingBank)
+    return a.mock.GetAccountDetails(token, accountID, consentID, requestingBank)
 }
 
 func (a *Adapter) GetAccountBalance(token, accountID, consentID, requestingBank string) (*bankadapter.Balance, error) {
-    mock := bankadapter.NewMockAdapter("abank")
-    return mock.GetAccountBalance(token, accountID, consentID, requestingBank)
+    return a.mock.GetAccountBalance(token, accountID, consentID, requestingBank)
 }
 
 func (a *Adapter) CreateAccount(token, clientID string, accountType string, initialBalance float64) (*bankadapter.Account, error) {
-    mock := bankadapter.NewMockAdapter("abank")
-    return mock.CreateAccount(token, clientID, accountType, initialBalance)
+    return a.mock.CreateAccount(token, clientID, accountType, initialBalance)
 }
 
 func (a *Adapter) CloseAccount(token, clientID, accountID string, closeRequest bankadapter.AccountCloseRequest) error {
-    mock := bankadapter.NewMockAdapter("abank")
-    return mock.CloseAccount(token, clientID, accountID, closeRequest)
+    return a.mock.CloseAccount(token, clientID, accountID, closeRequest)
 }
 
 func (a *Adapter) GetTransactions(token, accountID, consentID, requestingBank string, from, to time.Time, limit int) ([]bankadapter.Transaction, error) {
-    mock := bankadapter.NewMockAdapter("abank")
-    return mock.GetTransactions(token, accountID, consentID, requestingBank, from, to, limit)
+    return a.mock.GetTransactions(token, accountID, consentID, requestingBank, from, to, limit)
 }
 
 func (a *Adapter) GetProducts(token string, productType string) ([]bankadapter.Product, error) {
-    mock := bankadapter.NewMockAdapter("abank")
-    return mock.GetProducts(token, productType)
+    return a.mock.GetProducts(token, productType)
 }
 
 func (a *Adapter) GetProductDetails(token, productID string) (*bankadapter.Product, error) {
-    mock := bankadapter.NewMockAdapter("abank")
-    return mock.GetProductDetails(token, productID)
+    return a.mock.GetProductDetails(token, productID)
 }
 
 func (a *Adapter) GetAgreements(token, clientID, consentID, requestingBank string) ([]bankadapter.Agreement, error) {
-    mock := bankadapter.NewMockAdapter("abank")
-    return mock.GetAgreements(token, clientID, consentID, requestingBank)
+    return a.mock.GetAgreements(token, clientID, consentID, requestingBank)
 }
 
 func (a *Adapter) OpenDeposit(token, clientID, consentID, requestingBank string, request bankadapter.DepositRequest) (*bankadapter.Agreement, error) {
-    mock := bankadapter.NewMockAdapter("abank")
-    return mock.OpenDeposit(token, clientID, consentID, requestingBank, request)
+    return a.mock.OpenDeposit(token, clientID, consentID, requestingBank, request)
 }
 
 func (a *Adapter) CloseDeposit(token, clientID, consentID, requestingBank, agreementID string) (*bankadapter.CloseDepositResponse, error) {
-    mock := bankadapter.NewMockAdapter("abank")
-    return mock.CloseDeposit(token, clientID, consentID, requestingBank, agreementID)
+    return a.mock.CloseDeposit(token, clientID, consentID, requestingBank, agreementID)
 }
 
 func (a *Adapter) GetAgreementDetails(token, clientID, consentID, requestingBank, agreementID string) (*bankadapter.Agreement, error) {
-    mock := bankadapter.NewMockAdapter("abank")
-    return mock.GetAgreementDetails(token, clientID, consentID, requestingBank, agreementID)
+    return a.mock.GetAgreementDetails(token, clientID, consentID, requestingBank, agreementID)
 }
 
 func (a *Adapter) CreatePayment(token, clientID, requestingBank string, payment bankadapter.PaymentRequest) (*bankadapter.PaymentResponse, error) {
-    mock := bankadapter.NewMockAdapter("abank")
-    return mock.CreatePayment(token, clientID, requestingBank, payment)
+    return a.mock.CreatePayment(token, clientID, requestingBank, payment)
 }
 
 func (a *Adapter) GetPaymentStatus(token, clientID, paymentID string) (*bankadapter.PaymentResponse, error) {
-    mock := bankadapter.NewMockAdapter("abank")
-    return mock.GetPaymentStatus(token, clientID, paymentID)
+    return a.mock.GetPaymentStatus(token, clientID, paymentID)
 }
 
 func (a *Adapter) GetCards(token, clientID, consentID, requestingBank string) ([]bankadapter.Card, error) {
-    mock := bankadapter.NewMockAdapter("abank")
-    return mock.GetCards(token, clientID, consentID, requestingBank)
+    return a.mock.GetCards(token, clientID, consentID, requestingBank)
 }
 
 func (a *Adapter) CreateCard(token, clientID, consentID, requestingBank string, request bankadapter.CreateCardRequest) (*bankadapter.Card, error) {
-    mock := bankadapter.NewMockAdapter("abank")
-    return mock.CreateCard(token, clientID, consentID, requestingBank, request)
+    return a.mock.CreateCard(token, clientID, consentID, requestingBank, request)
 }
 
 func (a *Adapter) GetBankInfo() bankadapter.BankInfo {
@@ -166,6 +134,5 @@ func (a *Adapter) GetBankInfo() bankadapter.BankInfo {
 }
 
 func (a *Adapter) IsHealthy() bool {
-    mock := bankadapter.NewMockAdapter("abank")
-    return mock.IsHealthy()
+    return a.mock.IsHealthy()
 }
