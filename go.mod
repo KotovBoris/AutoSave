@@ -1,8 +1,6 @@
 module github.com/autosave/backend
 
-go 1.24.0
-
-toolchain go1.24.1
+go 1.25.0
 
 require (
 	github.com/gin-gonic/gin v1.11.0
@@ -47,4 +45,3 @@ require (
 	golang.org/x/tools v0.37.0 // indirect
 	google.golang.org/protobuf v1.36.9 // indirect
 )
-

@@ -1,5 +1,5 @@
 # Build stage
-FROM golang:1.22-alpine AS builder
+FROM golang:1.25-alpine AS builder
 
 RUN apk add --no-cache git gcc musl-dev
 
@@ -26,4 +26,5 @@ COPY --from=builder /app/migrations ./migrations
 EXPOSE 8080
 
 CMD ["./main"]
+
 
