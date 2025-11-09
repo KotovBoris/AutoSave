@@ -174,20 +174,20 @@ CREATE TABLE IF NOT EXISTS operations (
 );
 
 -- Indexes for performance
-CREATE INDEX idx_user_banks_user_id ON user_banks(user_id);
-CREATE INDEX idx_accounts_user_id ON accounts(user_id);
-CREATE INDEX idx_accounts_user_bank_id ON accounts(user_bank_id);
-CREATE INDEX idx_transactions_account_id ON transactions(account_id);
-CREATE INDEX idx_transactions_booking_date ON transactions(booking_date_time);
-CREATE INDEX idx_transactions_is_salary ON transactions(is_salary);
-CREATE INDEX idx_goals_user_id ON goals(user_id);
-CREATE INDEX idx_goals_status ON goals(status);
-CREATE INDEX idx_deposits_goal_id ON deposits(goal_id);
-CREATE INDEX idx_deposits_user_id ON deposits(user_id);
-CREATE INDEX idx_loans_user_id ON loans(user_id);
-CREATE INDEX idx_loan_payments_loan_id ON loan_payments(loan_id);
-CREATE INDEX idx_operations_user_id ON operations(user_id);
-CREATE INDEX idx_operations_created_at ON operations(created_at);
+CREATE INDEX IF NOT EXISTS idx_user_banks_user_id ON user_banks(user_id);
+CREATE INDEX IF NOT EXISTS idx_accounts_user_id ON accounts(user_id);
+CREATE INDEX IF NOT EXISTS idx_accounts_user_bank_id ON accounts(user_bank_id);
+CREATE INDEX IF NOT EXISTS idx_transactions_account_id ON transactions(account_id);
+CREATE INDEX IF NOT EXISTS idx_transactions_booking_date ON transactions(booking_date_time);
+CREATE INDEX IF NOT EXISTS idx_transactions_is_salary ON transactions(is_salary);
+CREATE INDEX IF NOT EXISTS idx_goals_user_id ON goals(user_id);
+CREATE INDEX IF NOT EXISTS idx_goals_status ON goals(status);
+CREATE INDEX IF NOT EXISTS idx_deposits_goal_id ON deposits(goal_id);
+CREATE INDEX IF NOT EXISTS idx_deposits_user_id ON deposits(user_id);
+CREATE INDEX IF NOT EXISTS idx_loans_user_id ON loans(user_id);
+CREATE INDEX IF NOT EXISTS idx_loan_payments_loan_id ON loan_payments(loan_id);
+CREATE INDEX IF NOT EXISTS idx_operations_user_id ON operations(user_id);
+CREATE INDEX IF NOT EXISTS idx_operations_created_at ON operations(created_at);
 
 -- Updated at trigger function
 CREATE OR REPLACE FUNCTION update_updated_at_column()
@@ -213,3 +213,4 @@ CREATE TRIGGER update_deposits_updated_at BEFORE UPDATE ON deposits
 
 CREATE TRIGGER update_loans_updated_at BEFORE UPDATE ON loans
     FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
