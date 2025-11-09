@@ -52,7 +52,7 @@ func (m *MockAdapter) GetBankToken() (*TokenResponse, error) {
 }
 
 func (m *MockAdapter) RefreshToken(refreshToken string) (*TokenResponse, error) {
-	return m.GetBankToken("mock_client", "mock_secret")
+	return m.GetBankToken()
 }
 
 func (m *MockAdapter) CreateAccountConsent(token, clientID, requestingBank string, permissions []string) (*ConsentResponse, error) {
@@ -414,5 +414,6 @@ func (m *MockAdapter) GetBankInfo() BankInfo {
 func (m *MockAdapter) IsHealthy() bool {
 	return m.Healthy
 }
+
 
 
