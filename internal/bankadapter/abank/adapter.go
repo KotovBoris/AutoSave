@@ -57,3 +57,4 @@ func (a *Adapter) IsHealthy() bool {
     return resp.StatusCode == 200
 }
 
+

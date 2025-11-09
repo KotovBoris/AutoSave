@@ -7,7 +7,7 @@ import (
 // BankAdapter is the common interface for all bank integrations
 type BankAdapter interface {
     // Authentication
-    GetBankToken(clientID, clientSecret string) (*TokenResponse, error)
+    GetBankToken() (*TokenResponse, error)
     RefreshToken(refreshToken string) (*TokenResponse, error)
     
     // Consents
@@ -274,3 +274,4 @@ const (
     ErrCodeBankUnavailable   = "BANK_UNAVAILABLE"
     ErrCodeRateLimited       = "RATE_LIMITED"
 )
+

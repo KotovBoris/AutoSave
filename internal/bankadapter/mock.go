@@ -36,7 +36,7 @@ func NewMockAdapter(bankID string) *MockAdapter {
 	}
 }
 
-func (m *MockAdapter) GetBankToken(clientID, clientSecret string) (*TokenResponse, error) {
+func (m *MockAdapter) GetBankToken() (*TokenResponse, error) {
 	if !m.Healthy {
 		return nil, &BankError{Code: ErrCodeBankUnavailable, Message: "Bank is unavailable"}
 	}
@@ -414,3 +414,4 @@ func (m *MockAdapter) GetBankInfo() BankInfo {
 func (m *MockAdapter) IsHealthy() bool {
 	return m.Healthy
 }
+

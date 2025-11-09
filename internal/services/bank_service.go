@@ -61,7 +61,7 @@ func (s *BankService) ConnectBank(ctx context.Context, userID int, bankID string
     bankInfo := adapter.GetBankInfo()
     
     // Get bank token
-    tokenResp, err := adapter.GetBankToken(bankInfo.ID, "")
+    tokenResp, err := adapter.GetBankToken()
     if err != nil {
         s.logger.Error().Err(err).Str("bankId", bankID).Msg("Failed to get bank token")
         return nil, fmt.Errorf("failed to get bank token: %w", err)
@@ -278,3 +278,4 @@ func (s *BankService) DisconnectBank(ctx context.Context, userID int, bankID str
     
     return nil
 }
+

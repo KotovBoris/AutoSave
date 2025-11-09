@@ -10,10 +10,10 @@ import (
 )
 
 // GetBankToken obtains bank access token
-func (a *Adapter) GetBankToken(clientID, clientSecret string) (*bankadapter.TokenResponse, error) {
+func (a *Adapter) GetBankToken() (*bankadapter.TokenResponse, error) {
     params := url.Values{}
-    params.Set("client_id", clientID)
-    params.Set("client_secret", clientSecret)
+    params.Set("client_id", a.config.ClientID)
+    params.Set("client_secret", a.config.ClientSecret)
     
     fullURL := a.BaseURL + endpointAuthToken + "?" + params.Encode()
     
@@ -59,3 +59,4 @@ func (a *Adapter) RefreshToken(refreshToken string) (*bankadapter.TokenResponse,
     // In production, this would use refresh_token grant type
     return a.GetBankToken(a.ClientID, a.ClientSecret)
 }
+

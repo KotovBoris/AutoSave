@@ -56,3 +56,4 @@ func (a *Adapter) IsHealthy() bool {
 	defer resp.Body.Close()
 	return resp.StatusCode == 200
 }
+
