@@ -61,3 +61,4 @@ func (a *Adapter) RefreshToken(refreshToken string) (*bankadapter.TokenResponse,
 }
 
 
+

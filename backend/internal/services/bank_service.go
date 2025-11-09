@@ -100,7 +100,7 @@ func (s *BankService) ConnectBank(ctx context.Context, userID int, bankID string
         BankID:             bankID,
         ExternalClientID:   externalClientID,
         BankToken:          tokenResp.AccessToken,
-        TokenExpiresAt:     &tokenResp.IssuedAt,
+        
         AccountConsentID:   &accountConsent.ConsentID,
         ProductConsentID:   &productConsent.ConsentID,
         Connected:          true,
@@ -278,5 +278,6 @@ func (s *BankService) DisconnectBank(ctx context.Context, userID int, bankID str
     
     return nil
 }
+
 
 
