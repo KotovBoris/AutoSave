@@ -30,7 +30,7 @@ run:
 
 .PHONY: build
 build:
-	go build -o bin/autosave cmd/api/main.go
+	go build -o autosave-backend cmd/api/main.go
 
 .PHONY: test
 test:
@@ -96,7 +96,7 @@ redis-cli:
 
 .PHONY: clean
 clean:
-	rm -rf bin/ tmp/ *.out coverage.html
+	rm -rf autosave-backend tmp/ *.out coverage.html
 
 .PHONY: docker-clean
 docker-clean: docker-down
@@ -120,3 +120,4 @@ prod-up:
 .PHONY: prod-down
 prod-down:
 	docker-compose -f docker-compose.yml -f docker-compose.prod.yml down
+
